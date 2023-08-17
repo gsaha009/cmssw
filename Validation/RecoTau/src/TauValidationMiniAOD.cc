@@ -55,7 +55,7 @@ void TauValidationMiniAOD::bookHistograms(DQMStore::IBooker &ibooker,
   MonitorElement *ptLoosevsJet, *etaLoosevsJet, *phiLoosevsJet, *massLoosevsJet, *puLoosevsJet;
   MonitorElement *ptLoosevsEle, *etaLoosevsEle, *phiLoosevsEle, *massLoosevsEle, *puLoosevsEle;
   MonitorElement *ptLoosevsMuo, *etaLoosevsMuo, *phiLoosevsMuo, *massLoosevsMuo, *puLoosevsMuo;
-  MonitorElement *ptTemp, *etaTemp, *phiTemp, *massTemp, *puTemp;
+  MonitorElement *ptTemp, *etaTemp, *phiTemp, *massTemp, *puTemp, *ipsigTemp;
   MonitorElement *decayModeFindingTemp, *decayModeTemp, *byDeepTau2018v2p5VSerawTemp;
   MonitorElement *byDeepTau2018v2p5VSjetrawTemp, *byDeepTau2018v2p5VSmurawTemp, *summaryTemp;
   MonitorElement *mtau_dm0, *mtau_dm1p2, *mtau_dm5, *mtau_dm6, *mtau_dm10, *mtau_dm11;
@@ -207,9 +207,9 @@ void TauValidationMiniAOD::bookHistograms(DQMStore::IBooker &ibooker,
   histoInfo ptHinfo = (histoSettings_.exists("pt")) ? histoInfo(histoSettings_.getParameter<edm::ParameterSet>("pt"))
                                                     : histoInfo(200, 0., 1000.);
   histoInfo etaHinfo = (histoSettings_.exists("eta")) ? histoInfo(histoSettings_.getParameter<edm::ParameterSet>("eta"))
-                                                      : histoInfo(60, -3, 3.);
+                                                      : histoInfo(30, -3, 3.);
   histoInfo phiHinfo = (histoSettings_.exists("phi")) ? histoInfo(histoSettings_.getParameter<edm::ParameterSet>("phi"))
-                                                      : histoInfo(60, -3, 3.);
+                                                      : histoInfo(32, -3.2, 3.2);
   histoInfo massHinfo = (histoSettings_.exists("mass"))
                             ? histoInfo(histoSettings_.getParameter<edm::ParameterSet>("mass"))
                             : histoInfo(200, 0, 10.);
@@ -243,16 +243,20 @@ void TauValidationMiniAOD::bookHistograms(DQMStore::IBooker &ibooker,
   ptTemp = ibooker.book1D("tau_pt", "tau pt", ptHinfo.nbins, ptHinfo.min, ptHinfo.max);
   etaTemp = ibooker.book1D("tau_eta", "tau eta", etaHinfo.nbins, etaHinfo.min, etaHinfo.max);
   phiTemp = ibooker.book1D("tau_phi", "tau phi", phiHinfo.nbins, phiHinfo.min, phiHinfo.max);
+  phiMap.insert(std::make_pair("notmatched", phiTemp));
+  phiTemp = ibooker.book1D("tau_phi_ref", "tau phi", phiHinfo.nbins, phiHinfo.min, phiHinfo.max);
+  phiMap.insert(std::make_pair("refmatched", phiTemp));
+  phiTemp = ibooker.book1D("tau_phi_gen", "tau phi", phiHinfo.nbins, phiHinfo.min, phiHinfo.max);
+  phiMap.insert(std::make_pair("genmatched", phiTemp));
   massTemp = ibooker.book1D("tau_mass", "tau mass", massHinfo.nbins, massHinfo.min, massHinfo.max);
   puTemp = ibooker.book1D("tau_pu", "tau pileup", puHinfo.nbins, puHinfo.min, puHinfo.max);
-
+  
   // map the histograms
   ptMap.insert(std::make_pair("", ptTemp));
   etaMap.insert(std::make_pair("", etaTemp));
-  phiMap.insert(std::make_pair("", phiTemp));
   massMap.insert(std::make_pair("", massTemp));
   puMap.insert(std::make_pair("", puTemp));
-
+  
   // book decay mode histograms
   decayModeFindingTemp = ibooker.book1D("tau_decayModeFinding",
                                         "tau decayModeFinding",
@@ -273,26 +277,63 @@ void TauValidationMiniAOD::bookHistograms(DQMStore::IBooker &ibooker,
   decayModeMap.insert(std::make_pair("gentau", decayModeTemp));
 
   // book the deepTau histograms
+  // Vs Electron
   byDeepTau2018v2p5VSerawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSeraw",
                                                "byDeepTau2018v2p5VSeraw",
                                                byDeepTau2018v2p5VSerawHinfo.nbins,
                                                byDeepTau2018v2p5VSerawHinfo.min,
                                                byDeepTau2018v2p5VSerawHinfo.max);
+  byDeepTau2018v2p5VSerawMap.insert(std::make_pair("", byDeepTau2018v2p5VSerawTemp));
+  byDeepTau2018v2p5VSerawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSeraw_bpixhole",
+                                               "byDeepTau2018v2p5VSeraw",
+                                               byDeepTau2018v2p5VSerawHinfo.nbins,
+                                               byDeepTau2018v2p5VSerawHinfo.min,
+                                               byDeepTau2018v2p5VSerawHinfo.max);
+  byDeepTau2018v2p5VSerawMap.insert(std::make_pair("bpixhole", byDeepTau2018v2p5VSerawTemp));
+  byDeepTau2018v2p5VSerawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSeraw_pixrest",
+                                               "byDeepTau2018v2p5VSeraw",
+                                               byDeepTau2018v2p5VSerawHinfo.nbins,
+                                               byDeepTau2018v2p5VSerawHinfo.min,
+                                               byDeepTau2018v2p5VSerawHinfo.max);
+  byDeepTau2018v2p5VSerawMap.insert(std::make_pair("pixrest", byDeepTau2018v2p5VSerawTemp));
+  // Vs Jet
   byDeepTau2018v2p5VSjetrawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSjetraw",
                                                  "byDeepTau2018v2p5VSjetraw",
                                                  byDeepTau2018v2p5VSjetrawHinfo.nbins,
                                                  byDeepTau2018v2p5VSjetrawHinfo.min,
                                                  byDeepTau2018v2p5VSjetrawHinfo.max);
+  byDeepTau2018v2p5VSjetrawMap.insert(std::make_pair("", byDeepTau2018v2p5VSjetrawTemp));
+  byDeepTau2018v2p5VSjetrawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSjetraw_bpixhole",
+                                                 "byDeepTau2018v2p5VSjetraw",
+                                                 byDeepTau2018v2p5VSjetrawHinfo.nbins,
+                                                 byDeepTau2018v2p5VSjetrawHinfo.min,
+                                                 byDeepTau2018v2p5VSjetrawHinfo.max);
+  byDeepTau2018v2p5VSjetrawMap.insert(std::make_pair("bpixhole", byDeepTau2018v2p5VSjetrawTemp));
+  byDeepTau2018v2p5VSjetrawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSjetraw_pixrest",
+                                                 "byDeepTau2018v2p5VSjetraw",
+                                                 byDeepTau2018v2p5VSjetrawHinfo.nbins,
+                                                 byDeepTau2018v2p5VSjetrawHinfo.min,
+                                                 byDeepTau2018v2p5VSjetrawHinfo.max);
+  byDeepTau2018v2p5VSjetrawMap.insert(std::make_pair("pixrest", byDeepTau2018v2p5VSjetrawTemp));
+  // Vs Muon
   byDeepTau2018v2p5VSmurawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSmuraw",
                                                 "byDeepTau2018v2p5VSmuraw",
                                                 byDeepTau2018v2p5VSmurawHinfo.nbins,
                                                 byDeepTau2018v2p5VSmurawHinfo.min,
                                                 byDeepTau2018v2p5VSmurawHinfo.max);
-
-  // map the deepTau histograms
-  byDeepTau2018v2p5VSerawMap.insert(std::make_pair("", byDeepTau2018v2p5VSerawTemp));
-  byDeepTau2018v2p5VSjetrawMap.insert(std::make_pair("", byDeepTau2018v2p5VSjetrawTemp));
   byDeepTau2018v2p5VSmurawMap.insert(std::make_pair("", byDeepTau2018v2p5VSmurawTemp));
+  byDeepTau2018v2p5VSmurawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSmuraw_bpixhole",
+                                                "byDeepTau2018v2p5VSmuraw",
+                                                byDeepTau2018v2p5VSmurawHinfo.nbins,
+                                                byDeepTau2018v2p5VSmurawHinfo.min,
+                                                byDeepTau2018v2p5VSmurawHinfo.max);
+  byDeepTau2018v2p5VSmurawMap.insert(std::make_pair("bpixhole", byDeepTau2018v2p5VSmurawTemp));
+  byDeepTau2018v2p5VSmurawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSmuraw_pixrest",
+                                                "byDeepTau2018v2p5VSmuraw",
+                                                byDeepTau2018v2p5VSmurawHinfo.nbins,
+                                                byDeepTau2018v2p5VSmurawHinfo.min,
+                                                byDeepTau2018v2p5VSmurawHinfo.max);
+  byDeepTau2018v2p5VSmurawMap.insert(std::make_pair("pixrest", byDeepTau2018v2p5VSmurawTemp));
 
   qcd = "QCD";
   real_data = "RealData";
@@ -474,6 +515,21 @@ void TauValidationMiniAOD::bookHistograms(DQMStore::IBooker &ibooker,
     massLoosevsMuoMap.insert(std::make_pair("", massLoosevsMuo));
     puLoosevsMuoMap.insert(std::make_pair("", puLoosevsMuo));
   }
+
+  ibooker.setCurrentFolder("RecoTauV/miniAODValidation/" + extensionName_ + "/Checks");
+
+  ipsigTemp = ibooker.book1D("tau_ip3d_sig", "tau IP3d significance", 30, 0., 15.);
+  ipMap.insert(std::make_pair("ip3dsig", ipsigTemp));
+  ipsigTemp = ibooker.book1D("tau_ip3d_sig_bpixhole", "tau IP3d significance: BPix hole", 30, 0., 15.);
+  ipMap.insert(std::make_pair("ip3dsig_bpix_hole", ipsigTemp));
+  ipsigTemp = ibooker.book1D("tau_ip3d_sig_rest", "tau IP3d significance: Rest", 30, 0., 15.);
+  ipMap.insert(std::make_pair("ip3dsig_rest", ipsigTemp));
+  ipsigTemp = ibooker.bookProfile("tau_ip3d_sig_phi", "tau IP3d significance vs phi", 32, -3.2, 3.2, 30, 0., 15.);
+  ipMap.insert(std::make_pair("ip3dsigphi", ipsigTemp));
+  ipsigTemp = ibooker.bookProfile2D("tau_ip3d_sig_etaphi", "tau IP3d significance (profile2d): eta vs phi", 25, -2.5, 2.5, 32, -3.2, 3.2, 30, 0, 15);
+  ipsigTemp->setXTitle("eta");
+  ipsigTemp->setYTitle("phi");
+  ipMap.insert(std::make_pair("ip3dsigetaphi", ipsigTemp));
 }
 void TauValidationMiniAOD::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup) {
   // create a handle to the tau collection
@@ -513,11 +569,13 @@ void TauValidationMiniAOD::analyze(const edm::Event &iEvent, const edm::EventSet
     int matchedTauIndex = -99;
     float gendRmin = 0.15;
     int genmatchedTauIndex = -99;
-
+    int tmpidx = 0;
     // find best matched tau
     for (unsigned iTau = 0; iTau < taus->size(); iTau++) {
       pat::TauRef tau(taus, iTau);
-
+      if (tmpidx == 0)
+	phiMap.find("notmatched")->second->Fill(tau->phi());
+      tmpidx++;
       float dR = deltaR2(tau->eta(), tau->phi(), RefJet->eta(), RefJet->phi());
       if (dR < dRmin) {
         dRmin = dR;
@@ -530,9 +588,23 @@ void TauValidationMiniAOD::analyze(const edm::Event &iEvent, const edm::EventSet
       // fill histograms with matchedTau quantities
       ptMap.find("")->second->Fill(matchedTau->pt());
       etaMap.find("")->second->Fill(matchedTau->eta());
-      phiMap.find("")->second->Fill(matchedTau->phi());
+      phiMap.find("refmatched")->second->Fill(matchedTau->phi());
       massMap.find("")->second->Fill(matchedTau->mass());
       puMap.find("")->second->Fill(pvHandle->size());
+      ipMap.find("ip3dsig")->second->Fill(matchedTau->ip3d_Sig());
+      if (matchedTau->phi() > -0.9 && matchedTau->phi() < 1.1) {
+	ipMap.find("ip3dsig_bpix_hole")->second->Fill(matchedTau->ip3d_Sig());
+	byDeepTau2018v2p5VSerawMap.find("bpixhole")->second->Fill(matchedTau->tauID("byDeepTau2018v2p5VSeraw"));
+	byDeepTau2018v2p5VSjetrawMap.find("bpixhole")->second->Fill(matchedTau->tauID("byDeepTau2018v2p5VSjetraw"));
+	byDeepTau2018v2p5VSmurawMap.find("bpixhole")->second->Fill(matchedTau->tauID("byDeepTau2018v2p5VSmuraw"));
+      }	else {
+	ipMap.find("ip3dsig_rest")->second->Fill(matchedTau->ip3d_Sig());
+	byDeepTau2018v2p5VSerawMap.find("pixrest")->second->Fill(matchedTau->tauID("byDeepTau2018v2p5VSeraw"));
+	byDeepTau2018v2p5VSjetrawMap.find("pixrest")->second->Fill(matchedTau->tauID("byDeepTau2018v2p5VSjetraw"));
+	byDeepTau2018v2p5VSmurawMap.find("pixrest")->second->Fill(matchedTau->tauID("byDeepTau2018v2p5VSmuraw"));
+      }
+      ipMap.find("ip3dsigphi")->second->Fill(matchedTau->phi(), matchedTau->ip3d_Sig());
+      ipMap.find("ip3dsigetaphi")->second->Fill(matchedTau->eta(), matchedTau->phi(), matchedTau->ip3d_Sig());
       decayModeMap.find("pftau")->second->Fill(matchedTau->decayMode());
 
       // fill select discriminators with matchedTau quantities
@@ -613,6 +685,7 @@ void TauValidationMiniAOD::analyze(const edm::Event &iEvent, const edm::EventSet
         int genTau_dm = findDecayMode(nPis, nPi0s);
         decayModeMap.find("gentau")->second->Fill(genTau_dm);
         dmMigrationMap.find("")->second->Fill(genTau_dm, matchedTau->decayMode());
+	phiMap.find("genmatched")->second->Fill(matchedTau->phi());
       }
 
       // count number of taus passing each discriminator's selection cut

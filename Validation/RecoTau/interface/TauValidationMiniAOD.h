@@ -65,7 +65,7 @@ private:
   edm::EDGetTokenT<std::vector<reco::GenParticle> > prunedGenToken_;
   edm::EDGetTokenT<std::vector<reco::GenJet> > genJetsToken_;
 
-  std::map<std::string, MonitorElement *> ptMap, etaMap, phiMap, massMap, puMap;
+  std::map<std::string, MonitorElement *> ptMap, etaMap, phiMap, massMap, puMap, ipMap;
   std::map<std::string, MonitorElement *> ptTightvsJetMap, phiTightvsJetMap, etaTightvsJetMap, massTightvsJetMap,
       puTightvsJetMap;
   std::map<std::string, MonitorElement *> ptTightvsEleMap, phiTightvsEleMap, etaTightvsEleMap, massTightvsEleMap,
