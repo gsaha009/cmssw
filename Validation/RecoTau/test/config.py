@@ -43,6 +43,16 @@ process_dict ={
         '/store/relval/CMSSW_13_0_11/RelValZEE_14/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV208-v2/2580000/f3e2bb4d-5988-42fa-800c-06556f1f02bd.root',
     ],
     'ZTT':[
+        #'/store/relval/CMSSW_13_0_11/RelValZTT_14/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV208-v1/2580000/433751c7-b9a1-4036-b1c8-668e679db182.root',
+        #'/store/relval/CMSSW_13_0_11/RelValZTT_14/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV208-v1/2580000/c048525f-000d-4fb5-9694-78d73e9e15f5.root',
+        '/store/relval/CMSSW_13_0_11/RelValZTT_14/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV208-v2/2580000/2ced95d2-ebcc-4456-abaa-736aade50b0f.root',
+        '/store/relval/CMSSW_13_0_11/RelValZTT_14/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV208-v2/2580000/39aac844-e272-4df6-b354-2e07de7039eb.root',
+        '/store/relval/CMSSW_13_0_11/RelValZTT_14/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV208-v2/2580000/713106b9-62a3-40ea-a541-a2bad98e1171.root',
+    ],
+    'QCD':[
+        '/store/relval/CMSSW_11_0_0_pre10/RelValQCD_FlatPt_15_3000HS_13/MINIAODSIM/110X_mcRun2_asymptotic_v2-v1/10000/91461CFA-8CEF-8C4E-864D-FFC1760FAC67.root',
+    ],
+    'TTbar':[
         #ttbar_relval_23_v1
         #"/store/relval/CMSSW_13_0_11/RelValTTbar_14TeV/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV204-v1/2590000/69c3b054-bd07-4178-9481-14f04f79ca95.root",
         #ttbar_relval_23_v2
@@ -51,13 +61,7 @@ process_dict ={
         "/store/relval/CMSSW_13_0_11/RelValTTbar_14TeV/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV204-v2/2590000/9f2d1acd-f33a-4199-b800-92076e327deb.root",
         "/store/relval/CMSSW_13_0_11/RelValTTbar_14TeV/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV204-v2/2590000/d6e551c5-462a-4466-9689-77e665bd25df.root",
         "/store/relval/CMSSW_13_0_11/RelValTTbar_14TeV/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV204-v2/2590000/e24e6546-95b7-4125-90b3-d33b56ffad25.root",
-        #'/store/relval/CMSSW_13_0_11/RelValZTT_14/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV208-v1/2580000/433751c7-b9a1-4036-b1c8-668e679db182.root',
-        #'/store/relval/CMSSW_13_0_11/RelValZTT_14/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV208-v1/2580000/c048525f-000d-4fb5-9694-78d73e9e15f5.root',
-        #'/store/relval/CMSSW_13_0_11/RelValZTT_14/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV208-v2/2580000/2ced95d2-ebcc-4456-abaa-736aade50b0f.root',
-        #'/store/relval/CMSSW_13_0_11/RelValZTT_14/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV208-v2/2580000/39aac844-e272-4df6-b354-2e07de7039eb.root',
-        #'/store/relval/CMSSW_13_0_11/RelValZTT_14/MINIAODSIM/PU_130X_mcRun3_2023_realistic_relvals2023D_v1_RV208-v2/2580000/713106b9-62a3-40ea-a541-a2bad98e1171.root',
-    ],
-    'QCD':['/store/relval/CMSSW_11_0_0_pre10/RelValQCD_FlatPt_15_3000HS_13/MINIAODSIM/110X_mcRun2_asymptotic_v2-v1/10000/91461CFA-8CEF-8C4E-864D-FFC1760FAC67.root']
+    ]
 }
 
 # Input source

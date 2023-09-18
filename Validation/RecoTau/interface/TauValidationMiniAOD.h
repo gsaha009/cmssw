@@ -102,6 +102,7 @@ private:
   std::string ztt;
   std::string zee;
   std::string zmm;
+  std::map<std::string, MonitorElement *> ipMap;
 };
 
 #endif

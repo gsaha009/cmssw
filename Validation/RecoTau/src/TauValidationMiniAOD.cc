@@ -55,14 +55,14 @@ void TauValidationMiniAOD::bookHistograms(DQMStore::IBooker &ibooker,
   MonitorElement *ptLoosevsJet, *etaLoosevsJet, *phiLoosevsJet, *massLoosevsJet, *puLoosevsJet;
   MonitorElement *ptLoosevsEle, *etaLoosevsEle, *phiLoosevsEle, *massLoosevsEle, *puLoosevsEle;
   MonitorElement *ptLoosevsMuo, *etaLoosevsMuo, *phiLoosevsMuo, *massLoosevsMuo, *puLoosevsMuo;
-  MonitorElement *ptTemp, *etaTemp, *phiTemp, *massTemp, *puTemp;
+  MonitorElement *ptTemp, *etaTemp, *phiTemp, *massTemp, *puTemp, *ipsigTemp;
   MonitorElement *decayModeFindingTemp, *decayModeTemp, *byDeepTau2018v2p5VSerawTemp;
   MonitorElement *byDeepTau2018v2p5VSjetrawTemp, *byDeepTau2018v2p5VSmurawTemp, *summaryTemp;
   MonitorElement *mtau_dm0, *mtau_dm1p2, *mtau_dm5, *mtau_dm6, *mtau_dm10, *mtau_dm11;
   MonitorElement *dmMigration, *ntau_vs_dm;
   MonitorElement *pTOverProng_dm0, *pTOverProng_dm1p2, *pTOverProng_dm5, *pTOverProng_dm6, *pTOverProng_dm10,
       *pTOverProng_dm11;
-
+  
   // ---------------------------- Book, Map Summary Histograms -------------------------------
 
   ibooker.setCurrentFolder("RecoTauV/miniAODValidation/" + extensionName_ + "/Summary");
@@ -272,6 +272,7 @@ void TauValidationMiniAOD::bookHistograms(DQMStore::IBooker &ibooker,
       "tau_decayMode_gen", "DecayMode: Generated tau", decayModeHinfo.nbins, decayModeHinfo.min, decayModeHinfo.max);
   decayModeMap.insert(std::make_pair("gentau", decayModeTemp));
 
+  /*
   // book the deepTau histograms
   byDeepTau2018v2p5VSerawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSeraw",
                                                "byDeepTau2018v2p5VSeraw",
@@ -293,7 +294,67 @@ void TauValidationMiniAOD::bookHistograms(DQMStore::IBooker &ibooker,
   byDeepTau2018v2p5VSerawMap.insert(std::make_pair("", byDeepTau2018v2p5VSerawTemp));
   byDeepTau2018v2p5VSjetrawMap.insert(std::make_pair("", byDeepTau2018v2p5VSjetrawTemp));
   byDeepTau2018v2p5VSmurawMap.insert(std::make_pair("", byDeepTau2018v2p5VSmurawTemp));
+  */
+  // book the deepTau histograms
+  // Vs Electron
+  byDeepTau2018v2p5VSerawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSeraw",
+                                               "byDeepTau2018v2p5VSeraw",
+                                               byDeepTau2018v2p5VSerawHinfo.nbins,
+                                               byDeepTau2018v2p5VSerawHinfo.min,
+                                               byDeepTau2018v2p5VSerawHinfo.max);
+  byDeepTau2018v2p5VSerawMap.insert(std::make_pair("", byDeepTau2018v2p5VSerawTemp));
+  byDeepTau2018v2p5VSerawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSeraw_bpixhole",
+                                               "byDeepTau2018v2p5VSeraw",
+                                               byDeepTau2018v2p5VSerawHinfo.nbins,
+                                               byDeepTau2018v2p5VSerawHinfo.min,
+                                               byDeepTau2018v2p5VSerawHinfo.max);
+  byDeepTau2018v2p5VSerawMap.insert(std::make_pair("bpixhole", byDeepTau2018v2p5VSerawTemp));
+  byDeepTau2018v2p5VSerawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSeraw_pixrest",
+                                               "byDeepTau2018v2p5VSeraw",
+                                               byDeepTau2018v2p5VSerawHinfo.nbins,
+                                               byDeepTau2018v2p5VSerawHinfo.min,
+                                               byDeepTau2018v2p5VSerawHinfo.max);
+  byDeepTau2018v2p5VSerawMap.insert(std::make_pair("pixrest", byDeepTau2018v2p5VSerawTemp));
+  // Vs Jet
+  byDeepTau2018v2p5VSjetrawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSjetraw",
+                                                 "byDeepTau2018v2p5VSjetraw",
+                                                 byDeepTau2018v2p5VSjetrawHinfo.nbins,
+                                                 byDeepTau2018v2p5VSjetrawHinfo.min,
+                                                 byDeepTau2018v2p5VSjetrawHinfo.max);
+  byDeepTau2018v2p5VSjetrawMap.insert(std::make_pair("", byDeepTau2018v2p5VSjetrawTemp));
+  byDeepTau2018v2p5VSjetrawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSjetraw_bpixhole",
+                                                 "byDeepTau2018v2p5VSjetraw",
+                                                 byDeepTau2018v2p5VSjetrawHinfo.nbins,
+                                                 byDeepTau2018v2p5VSjetrawHinfo.min,
+                                                 byDeepTau2018v2p5VSjetrawHinfo.max);
+  byDeepTau2018v2p5VSjetrawMap.insert(std::make_pair("bpixhole", byDeepTau2018v2p5VSjetrawTemp));
+  byDeepTau2018v2p5VSjetrawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSjetraw_pixrest",
+                                                 "byDeepTau2018v2p5VSjetraw",
+                                                 byDeepTau2018v2p5VSjetrawHinfo.nbins,
+                                                 byDeepTau2018v2p5VSjetrawHinfo.min,
+                                                 byDeepTau2018v2p5VSjetrawHinfo.max);
+  byDeepTau2018v2p5VSjetrawMap.insert(std::make_pair("pixrest", byDeepTau2018v2p5VSjetrawTemp));
+  // Vs Muon
+  byDeepTau2018v2p5VSmurawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSmuraw",
+                                                "byDeepTau2018v2p5VSmuraw",
+                                                byDeepTau2018v2p5VSmurawHinfo.nbins,
+                                                byDeepTau2018v2p5VSmurawHinfo.min,
+                                                byDeepTau2018v2p5VSmurawHinfo.max);
+  byDeepTau2018v2p5VSmurawMap.insert(std::make_pair("", byDeepTau2018v2p5VSmurawTemp));
+  byDeepTau2018v2p5VSmurawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSmuraw_bpixhole",
+                                                "byDeepTau2018v2p5VSmuraw",
+                                                byDeepTau2018v2p5VSmurawHinfo.nbins,
+                                                byDeepTau2018v2p5VSmurawHinfo.min,
+                                                byDeepTau2018v2p5VSmurawHinfo.max);
+  byDeepTau2018v2p5VSmurawMap.insert(std::make_pair("bpixhole", byDeepTau2018v2p5VSmurawTemp));
+  byDeepTau2018v2p5VSmurawTemp = ibooker.book1D("tau_byDeepTau2018v2p5VSmuraw_pixrest",
+                                                "byDeepTau2018v2p5VSmuraw",
+                                                byDeepTau2018v2p5VSmurawHinfo.nbins,
+                                                byDeepTau2018v2p5VSmurawHinfo.min,
+                                                byDeepTau2018v2p5VSmurawHinfo.max);
+  byDeepTau2018v2p5VSmurawMap.insert(std::make_pair("pixrest", byDeepTau2018v2p5VSmurawTemp));
 
+  
   qcd = "QCD";
   real_data = "RealData";
   real_eledata = "RealElectronsData";
@@ -474,6 +535,22 @@ void TauValidationMiniAOD::bookHistograms(DQMStore::IBooker &ibooker,
     massLoosevsMuoMap.insert(std::make_pair("", massLoosevsMuo));
     puLoosevsMuoMap.insert(std::make_pair("", puLoosevsMuo));
   }
+
+  ibooker.setCurrentFolder("RecoTauV/miniAODValidation/" + extensionName_ + "/Checks");
+
+  ipsigTemp = ibooker.book1D("tau_ip3d_sig", "tau IP3d significance", 30, 0., 15.);
+  ipMap.insert(std::make_pair("ip3dsig", ipsigTemp));
+  ipsigTemp = ibooker.book1D("tau_ip3d_sig_bpixhole", "tau IP3d significance: BPix hole", 30, 0., 15.);
+  ipMap.insert(std::make_pair("ip3dsig_bpix_hole", ipsigTemp));
+  ipsigTemp = ibooker.book1D("tau_ip3d_sig_rest", "tau IP3d significance: Rest", 30, 0., 15.);
+  ipMap.insert(std::make_pair("ip3dsig_rest", ipsigTemp));
+  ipsigTemp = ibooker.bookProfile("tau_ip3d_sig_phi", "tau IP3d significance vs phi", 32, -3.2, 3.2, 30, 0., 15.);
+  ipMap.insert(std::make_pair("ip3dsigphi", ipsigTemp));
+  ipsigTemp = ibooker.bookProfile2D("tau_ip3d_sig_etaphi", "tau IP3d significance (profile2d): eta vs phi", 25, -2.5, 2.5, 32, -3.2, 3.2, 30, 0, 15);
+  ipsigTemp->setXTitle("eta");
+  ipsigTemp->setYTitle("phi");
+  ipMap.insert(std::make_pair("ip3dsigetaphi", ipsigTemp));
+
 }
 void TauValidationMiniAOD::analyze(const edm::Event &iEvent, const edm::EventSetup &iSetup) {
   // create a handle to the tau collection
@@ -505,6 +582,268 @@ void TauValidationMiniAOD::analyze(const edm::Event &iEvent, const edm::EventSet
   }
   std::vector<const reco::GenParticle *> GenTaus;
 
+
+  bool isfake = false;
+
+
+  std::vector<int> indices;
+  //std::vector<int> matchedTauIndices;
+  //std::vector<int> unmatchedTauIndices;
+  for (refCandidateCollection::const_iterator RefJet = ReferenceCollection->begin();
+       RefJet != ReferenceCollection->end();
+       RefJet++) {
+    float dRmin = 0.15;
+    int matchedTauIndex = -99;
+
+    // find best matched tau
+    for (unsigned iTau = 0; iTau < taus->size(); iTau++) {
+      pat::TauRef tau(taus, iTau);
+      float dR = deltaR2(tau->eta(), tau->phi(), RefJet->eta(), RefJet->phi());
+      if (dR < dRmin) {
+        dRmin = dR;
+        matchedTauIndex = iTau;
+      }
+    }
+    if (dRmin < 0.15) indices.push_back(matchedTauIndex); //matchedTauIndices.push_back(matchedTauIndex);
+  }
+
+  //std::vector<int> indices = matchedTauIndices;
+
+  if (isfake) {
+    std::vector<int> unmatchedTauIndices;
+    for (unsigned iTau = 0; iTau < taus->size(); iTau++) {
+      bool hasmatch = false;
+      //for (auto &idx: matchedTauIndices) {
+      for (auto &idx: indices) {
+	if (static_cast<int>(iTau) == idx) {
+	  hasmatch = true;
+	  break;
+	}
+      }
+      if (hasmatch) continue;
+      unmatchedTauIndices.push_back(static_cast<int>(iTau));
+    }
+    indices = unmatchedTauIndices;
+  }
+  //std::cout<<"nTaus: "<<taus->size()<<"\n";
+  //std::cout<<"matched/un nTaus: "<<indices.size()<<"\n";
+  //for (auto &idx: indices) std::cout<<idx<<"\t";
+  
+  //std::cout<<"\n\n";
+  for (auto &idx: indices) {
+    pat::TauRef tau(taus, idx);
+
+    // fill histograms with tau quantities
+    ptMap.find("")->second->Fill(tau->pt());
+    etaMap.find("")->second->Fill(tau->eta());
+    phiMap.find("")->second->Fill(tau->phi());
+    massMap.find("")->second->Fill(tau->mass());
+    puMap.find("")->second->Fill(pvHandle->size());
+
+
+    
+    ipMap.find("ip3dsig")->second->Fill(tau->ip3d_Sig());
+    if (tau->phi() > -0.9 && tau->phi() < 1.1) {
+      ipMap.find("ip3dsig_bpix_hole")->second->Fill(tau->ip3d_Sig());
+      byDeepTau2018v2p5VSerawMap.find("bpixhole")->second->Fill(tau->tauID("byDeepTau2018v2p5VSeraw"));
+      byDeepTau2018v2p5VSjetrawMap.find("bpixhole")->second->Fill(tau->tauID("byDeepTau2018v2p5VSjetraw"));
+      byDeepTau2018v2p5VSmurawMap.find("bpixhole")->second->Fill(tau->tauID("byDeepTau2018v2p5VSmuraw"));
+    }	else {
+      ipMap.find("ip3dsig_rest")->second->Fill(tau->ip3d_Sig());
+      byDeepTau2018v2p5VSerawMap.find("pixrest")->second->Fill(tau->tauID("byDeepTau2018v2p5VSeraw"));
+      byDeepTau2018v2p5VSjetrawMap.find("pixrest")->second->Fill(tau->tauID("byDeepTau2018v2p5VSjetraw"));
+      byDeepTau2018v2p5VSmurawMap.find("pixrest")->second->Fill(tau->tauID("byDeepTau2018v2p5VSmuraw"));
+    }
+    ipMap.find("ip3dsigphi")->second->Fill(tau->phi(), tau->ip3d_Sig());
+    ipMap.find("ip3dsigetaphi")->second->Fill(tau->eta(), tau->phi(), tau->ip3d_Sig());
+
+
+    
+    decayModeMap.find("pftau")->second->Fill(tau->decayMode());
+
+    // fill select discriminators with matchedTau quantities
+    if (tau->isTauIDAvailable("decayModeFindingNewDMs"))
+      decayModeFindingMap.find("")->second->Fill(tau->tauID("decayModeFindingNewDMs"));
+    if (tau->isTauIDAvailable("byDeepTau2018v2p5VSeraw"))
+      byDeepTau2018v2p5VSerawMap.find("")->second->Fill(tau->tauID("byDeepTau2018v2p5VSeraw"));
+    if (tau->isTauIDAvailable("byDeepTau2018v2p5VSjetraw"))
+      byDeepTau2018v2p5VSjetrawMap.find("")->second->Fill(tau->tauID("byDeepTau2018v2p5VSjetraw"));
+    if (tau->isTauIDAvailable("byDeepTau2018v2p5VSmuraw"))
+      byDeepTau2018v2p5VSmurawMap.find("")->second->Fill(tau->tauID("byDeepTau2018v2p5VSmuraw"));
+    
+    // fill tau mass for decay modes 0,1+2,5,6,7,10,11
+    if (tau->decayMode() == 0) {
+      mtau_dm0Map.find("")->second->Fill(tau->mass());
+      pTOverProng_dm0Map.find("")->second->Fill(tau->pt(), tau->ptLeadChargedCand());
+    } else if (tau->decayMode() == 1 || tau->decayMode() == 2) {
+      mtau_dm1p2Map.find("")->second->Fill(tau->mass());
+      pTOverProng_dm1p2Map.find("")->second->Fill(tau->pt(), tau->ptLeadChargedCand());
+    } else if (tau->decayMode() == 5) {
+      mtau_dm5Map.find("")->second->Fill(tau->mass());
+      pTOverProng_dm5Map.find("")->second->Fill(tau->pt(), tau->ptLeadChargedCand());
+    } else if (tau->decayMode() == 6) {
+      mtau_dm6Map.find("")->second->Fill(tau->mass());
+      pTOverProng_dm6Map.find("")->second->Fill(tau->pt(), tau->ptLeadChargedCand());
+    } else if (tau->decayMode() == 10) {
+      mtau_dm10Map.find("")->second->Fill(tau->mass());
+      pTOverProng_dm10Map.find("")->second->Fill(tau->pt(), tau->ptLeadChargedCand());
+    } else if (tau->decayMode() == 11) {
+      mtau_dm11Map.find("")->second->Fill(tau->mass());
+      pTOverProng_dm11Map.find("")->second->Fill(tau->pt(), tau->ptLeadChargedCand());
+    }
+
+    // fill decay mode population plot
+    ntau_vs_dmMap.find("")->second->Fill(taus->size(), tau->decayMode());
+
+    if (!isfake) {
+      //Fill decay mode migration 2D histogragms
+      //First do a gen Matching
+      unsigned genindex = 0;
+      float gendRmin = 0.15;
+      int genmatchedTauIndex = -99;
+      for (const auto &genParticle : *genParticles) {
+	if (abs(genParticle.pdgId()) == 15) {
+	  float gendR = deltaR2(tau->eta(), tau->phi(), genParticle.eta(), genParticle.phi());
+	  if (gendR < gendRmin) {
+	    gendRmin = gendR;
+	    genmatchedTauIndex = genindex;
+	  }
+	}
+	genindex = genindex + 1;
+      }
+
+      if (gendRmin < 0.15) {
+	int nPi0s = 0;
+	int nPis = 0;
+	auto &gentau = genParticles->at(genmatchedTauIndex);
+	for (unsigned idtr = 0; idtr < gentau.numberOfDaughters(); idtr++) {
+	  const reco::GenParticle *dtr = dynamic_cast<const reco::GenParticle *>(gentau.daughter(idtr));
+	  int dtrpdgID = std::abs(dtr->pdgId());
+	  int dtrstatus = dtr->status();
+	  if (dtrpdgID == 12 || dtrpdgID == 14 || dtrpdgID == 16)
+	    continue;
+	  if (dtrpdgID == 111 || dtrpdgID == 311)
+	    nPi0s++;
+	  else if (dtrpdgID == 211 || dtrpdgID == 321)
+	    nPis++;
+	  else if (dtrpdgID == 15 && dtrstatus == 2) {
+	    for (unsigned idtr2 = 0; idtr2 < dtr->numberOfDaughters(); idtr2++) {
+	      const reco::GenParticle *dtr2 = dynamic_cast<const reco::GenParticle *>(dtr->daughter(idtr2));
+	      int dtr2pdgID = std::abs(dtr2->pdgId());
+	      if (dtr2pdgID == 12 || dtr2pdgID == 14 || dtr2pdgID == 16)
+		continue;
+	      if (dtr2pdgID == 111 || dtr2pdgID == 311)
+		nPi0s++;
+	      else if (dtr2pdgID == 211 || dtr2pdgID == 321)
+		nPis++;
+	    }
+	  }
+	}
+	int genTau_dm = findDecayMode(nPis, nPi0s);
+	decayModeMap.find("gentau")->second->Fill(genTau_dm);
+	dmMigrationMap.find("")->second->Fill(genTau_dm, tau->decayMode());
+      }
+    }
+    
+    // count number of taus passing each discriminator's selection cut
+    unsigned j = 0;
+    for (const auto &it : discriminators_) {
+      string currentDiscriminator = it.getParameter<string>("discriminator");
+      double selectionCut = it.getParameter<double>("selectionCut");
+      summaryMap.find("Den")->second->Fill(j);
+      if (tau->tauID(currentDiscriminator) >= selectionCut)
+	summaryMap.find("Num")->second->Fill(j);
+      j = j + 1;
+    }
+    
+    // fill the vsXXX histograms against (jet, e, mu)
+    // vsJet/
+    if (extensionName_.compare(qcd) == 0 || extensionName_.compare(real_data) == 0 ||
+	extensionName_.compare(ztt) == 0) {
+      // vsJet/tight
+      if (tau->tauID("byTightDeepTau2018v2p5VSjet") >= 0.5) {
+	ptTightvsJetMap.find("")->second->Fill(tau->pt());
+	etaTightvsJetMap.find("")->second->Fill(tau->eta());
+	phiTightvsJetMap.find("")->second->Fill(tau->phi());
+	massTightvsJetMap.find("")->second->Fill(tau->mass());
+	puTightvsJetMap.find("")->second->Fill(pvHandle->size());
+      }
+      // vsJet/medium
+      if (tau->tauID("byMediumDeepTau2018v2p5VSjet") >= 0.5) {
+	ptMediumvsJetMap.find("")->second->Fill(tau->pt());
+	etaMediumvsJetMap.find("")->second->Fill(tau->eta());
+	phiMediumvsJetMap.find("")->second->Fill(tau->phi());
+	massMediumvsJetMap.find("")->second->Fill(tau->mass());
+	puMediumvsJetMap.find("")->second->Fill(pvHandle->size());
+      }
+      // vsJet/loose
+      if (tau->tauID("byLooseDeepTau2018v2p5VSjet") >= 0.5) {
+	ptLoosevsJetMap.find("")->second->Fill(tau->pt());
+	etaLoosevsJetMap.find("")->second->Fill(tau->eta());
+	phiLoosevsJetMap.find("")->second->Fill(tau->phi());
+	massLoosevsJetMap.find("")->second->Fill(tau->mass());
+	puLoosevsJetMap.find("")->second->Fill(pvHandle->size());
+      }
+    }
+    // vsEle/
+    if (extensionName_.compare(real_eledata) == 0 || extensionName_.compare(zee) == 0 ||
+	extensionName_.compare(ztt) == 0) {
+      // vsEle/tight
+      if (tau->tauID("byTightDeepTau2018v2p5VSe") >= 0.5) {
+	ptTightvsEleMap.find("")->second->Fill(tau->pt());
+	etaTightvsEleMap.find("")->second->Fill(tau->eta());
+	phiTightvsEleMap.find("")->second->Fill(tau->phi());
+	massTightvsEleMap.find("")->second->Fill(tau->mass());
+	puTightvsEleMap.find("")->second->Fill(pvHandle->size());
+      }
+      // vsEle/medium
+      if (tau->tauID("byMediumDeepTau2018v2p5VSe") >= 0.5) {
+	ptMediumvsEleMap.find("")->second->Fill(tau->pt());
+	etaMediumvsEleMap.find("")->second->Fill(tau->eta());
+	phiMediumvsEleMap.find("")->second->Fill(tau->phi());
+	massMediumvsEleMap.find("")->second->Fill(tau->mass());
+	puMediumvsEleMap.find("")->second->Fill(pvHandle->size());
+      }
+      // vsEle/loose
+      if (tau->tauID("byLooseDeepTau2018v2p5VSe") >= 0.5) {
+	ptLoosevsEleMap.find("")->second->Fill(tau->pt());
+	etaLoosevsEleMap.find("")->second->Fill(tau->eta());
+	phiLoosevsEleMap.find("")->second->Fill(tau->phi());
+	massLoosevsEleMap.find("")->second->Fill(tau->mass());
+	puLoosevsEleMap.find("")->second->Fill(pvHandle->size());
+      }
+    }
+    // vsMuo/
+    if (extensionName_.compare(real_mudata) == 0 || extensionName_.compare(zmm) == 0 ||
+	extensionName_.compare(ztt) == 0) {
+      // vsMuo/tight
+      if (tau->tauID("byTightDeepTau2018v2p5VSmu") >= 0.5) {
+	ptTightvsMuoMap.find("")->second->Fill(tau->pt());
+	etaTightvsMuoMap.find("")->second->Fill(tau->eta());
+	phiTightvsMuoMap.find("")->second->Fill(tau->phi());
+	massTightvsMuoMap.find("")->second->Fill(tau->mass());
+	puTightvsMuoMap.find("")->second->Fill(pvHandle->size());
+      }
+      // vsMuo/medium
+      if (tau->tauID("byMediumDeepTau2018v2p5VSmu") >= 0.5) {
+	ptMediumvsMuoMap.find("")->second->Fill(tau->pt());
+	etaMediumvsMuoMap.find("")->second->Fill(tau->eta());
+	phiMediumvsMuoMap.find("")->second->Fill(tau->phi());
+	massMediumvsMuoMap.find("")->second->Fill(tau->mass());
+	puMediumvsMuoMap.find("")->second->Fill(pvHandle->size());
+      }
+      // vsMuo/loose
+      if (tau->tauID("byLooseDeepTau2018v2p5VSmu") >= 0.5) {
+	ptLoosevsMuoMap.find("")->second->Fill(tau->pt());
+	etaLoosevsMuoMap.find("")->second->Fill(tau->eta());
+	phiLoosevsMuoMap.find("")->second->Fill(tau->phi());
+	massLoosevsMuoMap.find("")->second->Fill(tau->mass());
+	puLoosevsMuoMap.find("")->second->Fill(pvHandle->size());
+      }
+    }
+  }
+  
+  /*
   // dR match reference object to tau
   for (refCandidateCollection::const_iterator RefJet = ReferenceCollection->begin();
        RefJet != ReferenceCollection->end();
@@ -524,6 +863,7 @@ void TauValidationMiniAOD::analyze(const edm::Event &iEvent, const edm::EventSet
         matchedTauIndex = iTau;
       }
     }
+    extmap.find("")->second->Fill(dRmin);
     if (dRmin < 0.15) {
       pat::TauRef matchedTau(taus, matchedTauIndex);
 
@@ -597,7 +937,7 @@ void TauValidationMiniAOD::analyze(const edm::Event &iEvent, const edm::EventSet
             nPi0s++;
           else if (dtrpdgID == 211 || dtrpdgID == 321)
             nPis++;
-          else if (dtrpdgID == 15 && dtrstatus == 2 /*&& dtr->isLastCopy()*/) {
+          else if (dtrpdgID == 15 && dtrstatus == 2) {
             for (unsigned idtr2 = 0; idtr2 < dtr->numberOfDaughters(); idtr2++) {
               const reco::GenParticle *dtr2 = dynamic_cast<const reco::GenParticle *>(dtr->daughter(idtr2));
               int dtr2pdgID = std::abs(dtr2->pdgId());
@@ -713,4 +1053,5 @@ void TauValidationMiniAOD::analyze(const edm::Event &iEvent, const edm::EventSet
       }
     }
   }
+  */
 }
