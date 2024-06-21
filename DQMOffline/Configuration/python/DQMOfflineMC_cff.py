@@ -35,3 +35,6 @@ DQMOfflineNanoAOD.replace(nanoDQM, nanoDQMMC)
 #PostDQMOfflineNanoAOD.replace(nanoDQM, nanoDQMMC)
 from PhysicsTools.NanoAOD.nanojmeDQM_cff import nanojmeDQMMC
 DQMOfflineNanoJME.replace(nanojmeDQM, nanojmeDQMMC)
+
+
+PostDQMOfflineMiniAOD.remove(DQMOfflineTAU)

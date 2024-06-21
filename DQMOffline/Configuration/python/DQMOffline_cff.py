@@ -72,6 +72,7 @@ DQMOfflineMuonDPGExpress = cms.Sequence(rpcTier0Source *
                                         cscSources *
                                         gemSources)
 
+
 from Configuration.Eras.Modifier_run3_GEM_cff import run3_GEM
 _run3_GEM_DQMOfflineMuonDPG = DQMOfflineMuonDPG.copy()
 _run3_GEM_DQMOfflineMuonDPG += gemSources
@@ -90,7 +91,8 @@ DQMOfflinePreDPG = cms.Sequence( DQMOfflineDCS *
 				 DQMOfflineTrackerPixel *
 				 DQMOfflineMuonDPG *
                                  DQMOfflineCASTOR *
-                                 DQMOfflineCTPPS )
+                                 DQMOfflineCTPPS
+                                )
 
 
 DQMOfflinePreDPGExpress = cms.Sequence( DQMOfflineDCS *
@@ -102,7 +104,8 @@ DQMOfflinePreDPGExpress = cms.Sequence( DQMOfflineDCS *
                                         DQMOfflineTrackerPixel *
                                         DQMOfflineMuonDPGExpress *
                                         DQMOfflineCASTOR *
-                                        DQMOfflineCTPPS )
+                                        DQMOfflineCTPPS
+                                       )
 
 DQMOfflineDPG = cms.Sequence( DQMOfflinePreDPG *
                               DQMMessageLogger )
@@ -209,7 +212,6 @@ DQMOfflinePOGMC = cms.Sequence( DQMOfflinePrePOGMC *
 from DQM.TrackingMonitorSource.pixelTracksMonitoring_cff import *
 from DQMOffline.RecoB.PixelVertexMonitor_cff import *
 from DQM.SiOuterTracker.OuterTrackerSourceConfig_cff import *
-from Validation.RecoTau.DQMSequences_cfi import *
 
 DQMOfflinePixelTracking = cms.Sequence( pixelTracksMonitoring *
                                         pixelPVMonitor *
@@ -224,9 +226,6 @@ DQMOuterTracker = cms.Sequence( DQMOfflineDCS *
 
 DQMOfflineTrackerPhase2 = cms.Sequence( trackerphase2DQMSource )
 
-DQMOfflineTAU = cms.Sequence( produceDenomsData *
-				pfTauRunDQMValidation )
-
 DQMOfflineTrackerStripCommon = cms.Sequence( SiStripDQMTier0Common )
 
 DQMOfflineTrackerPixel = cms.Sequence( siPixelOfflineDQM_source )
@@ -239,8 +238,7 @@ DQMOfflineCommon = cms.Sequence( DQMOfflineDCS *
                                  DQMOfflineTrigger *
                                  DQMOfflineBeam *
                                  DQMOfflineCASTOR *
-                                 DQMOfflinePhysics *
-				 DQMOfflineTAU
+                                 DQMOfflinePhysics
                                 )
 
 DQMOfflineCommonFakeHLT = cms.Sequence( DQMOfflineCommon )
@@ -250,21 +248,21 @@ DQMOfflineCommonFakeHLT.remove( DQMOfflineTrigger )
 DQMOfflineTrackerStripMinBias = cms.Sequence( SiStripDQMTier0MinBias )
 
 DQMOfflineTrackingMinBias = cms.Sequence( TrackingDQMSourceTier0MinBias *
-                                   DQMOfflineVertex *
-                                   materialDumperAnalyzer )
+                                          DQMOfflineVertex *
+                                          materialDumperAnalyzer )
 
 
 DQMOfflineCommonSiStripZeroBias = cms.Sequence( DQMOfflineDCS *
-                                 DQMMessageLogger *
-				 DQMOfflineTrackerStripMinBias *
-				 DQMOfflineTrackerPixel *
-                                 DQMOfflineL1T *
-                                 DQMOfflineTrigger *
-                                 DQMOfflineBeam *
-                                 DQMOfflineCASTOR *
-                                 DQMOfflinePhysics *
-				 DQMOfflineTrackingMinBias
-                                 )
+                                                DQMMessageLogger *
+				                DQMOfflineTrackerStripMinBias *
+				                DQMOfflineTrackerPixel *
+                                                DQMOfflineL1T *
+                                                DQMOfflineTrigger *
+                                                DQMOfflineBeam *
+                                                DQMOfflineCASTOR *
+                                                DQMOfflinePhysics *
+				                DQMOfflineTrackingMinBias
+                                               )
 
 DQMOfflineCommonSiStripZeroBiasFakeHLT = cms.Sequence( DQMOfflineCommonSiStripZeroBias )
 DQMOfflineCommonSiStripZeroBiasFakeHLT.remove( DQMOfflineTrigger )
@@ -284,11 +282,6 @@ _run3_GEM_DQMOfflineMuon = DQMOfflineMuon.copy()
 _run3_GEM_DQMOfflineMuon += gemSources
 run3_GEM.toReplaceWith(DQMOfflineMuon, _run3_GEM_DQMOfflineMuon)
 
-#Taus not created in pp conditions for HI
-from Configuration.ProcessModifiers.pp_on_AA_cff import pp_on_AA
-_DQMOfflineTAU = cms.Sequence()
-pp_on_AA.toReplaceWith(DQMOfflineTAU, _DQMOfflineTAU)
-
 
 # miniAOD DQM validation
 from Validation.RecoParticleFlow.miniAODDQM_cff import * # On MiniAOD vs RECO
@@ -297,13 +290,32 @@ from DQM.TrackingMonitor.tracksDQMMiniAOD_cff import *
 from DQMOffline.RecoB.bTagMiniDQM_cff import *
 from DQMOffline.Muon.miniAOD_cff import *
 from DQM.Physics.DQMTopMiniAOD_cff import *
+from Validation.RecoTau.DQMSequences_cfi import *
 
-DQMOfflineMiniAOD = cms.Sequence(jetMETDQMOfflineRedoProductsMiniAOD*bTagMiniDQMSource*muonMonitors_miniAOD*MuonMiniAOD*DQMOfflinePF)
+DQMOfflineTAU = cms.Sequence( produceDenomsData *
+			      pfTauRunDQMValidation )
+
+#Taus not created in pp conditions for HI
+from Configuration.ProcessModifiers.pp_on_AA_cff import pp_on_AA
+_DQMOfflineTAU = cms.Sequence()
+pp_on_AA.toReplaceWith(DQMOfflineTAU, _DQMOfflineTAU)
+
+
+DQMOfflineMiniAOD = cms.Sequence(jetMETDQMOfflineRedoProductsMiniAOD
+                                 * bTagMiniDQMSource
+                                 * muonMonitors_miniAOD
+                                 * MuonMiniAOD
+                                 * DQMOfflinePF)
+#* DQMOfflineTAU)
 
 #Post sequences are automatically placed in the EndPath by ConfigBuilder if PAT is run.
 #miniAOD DQM sequences need to access the filter results.
 
-PostDQMOfflineMiniAOD = cms.Sequence(miniAODDQMSequence*jetMETDQMOfflineSourceMiniAOD*tracksDQMMiniAOD*topPhysicsminiAOD)
+PostDQMOfflineMiniAOD = cms.Sequence(miniAODDQMSequence
+                                     * jetMETDQMOfflineSourceMiniAOD
+                                     * tracksDQMMiniAOD
+                                     * topPhysicsminiAOD
+                                     * DQMOfflineTAU)
 PostDQMOffline = cms.Sequence()
 
 from Configuration.Eras.Modifier_run3_HB_cff import run3_HB

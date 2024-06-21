@@ -11,9 +11,9 @@ from DQMOffline.RecoB.dqmAnalyzer_cff import *
 DQMOfflinePrePOG = cms.Sequence(
     pvMonitor *
     bTagPlotsDATA *
-    dqmPhysics *
-    produceDenomsData *
-    pfTauRunDQMValidation
+    dqmPhysics
+    #produceDenomsData *
+    #pfTauRunDQMValidation
     )
 
 # Fix Jet Corrector in FastSim
