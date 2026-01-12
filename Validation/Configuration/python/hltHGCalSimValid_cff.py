@@ -101,7 +101,8 @@ hltHgcalAssociatorsTask = cms.Task(hltHGCalRecHitMapProducer,
                                    hltAllHitToTracksterAssociations,
                                    hltHitToSimClusterCaloParticleAssociator,
                                    hltAllTrackstersToSimTrackstersAssociationsByHits,
-                                   SimTauProducer
+                                   SimTauProducer,
+                                   hltTiclTauValidator
                                    )
 
 hltHgcalPrevalidation = cms.Sequence(
