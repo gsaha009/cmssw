@@ -123,13 +123,6 @@ _hltvalidationWithMC_Phase2.insert(-1, hgcalHitCalibrationHLT)
 _hltvalidationWithMC_Phase2.insert(-1, hltHgcalValidator)
 _hltvalidationWithMC_Phase2.insert(0, hltGENValidation)
 
-# Add at the end only when mtd_at_hlt is active
-from Configuration.ProcessModifiers.mtd_at_hlt_cff import mtd_at_hlt
-mtd_at_hlt.toModify(
-    _hltvalidationWithMC_Phase2,
-    func=lambda seq: seq.insert(-1, hltMtdRecoValid)
-)
-
 phase2_common.toReplaceWith(hltvalidationWithMC, _hltvalidationWithMC_Phase2)
 
 hltvalidationWithData = cms.Sequence(
