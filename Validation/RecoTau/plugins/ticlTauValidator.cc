@@ -688,7 +688,7 @@ void TICLTauValidator::analyze(const edm::Event& iEvent,
       trigger::VRpftau tauRefs;
       filterProduct->getObjects(trigger::TriggerTau, tauRefs);
       if (hltTauFilterLabels_[fi] == "hltHpsDoublePFTau40TrackPt1MediumChargedIsolation")
-        finalFilterTauRefs = tauRefs;
+	finalFilterTauRefs = tauRefs;
       // HLT filter products accessed for final filter tau reference extraction
     } else {
       edm::LogWarning("TICLTauValidator") << "HLT filter " << hltTauFilterLabels_[fi]
@@ -1876,7 +1876,8 @@ void TICLTauValidator::fillDescriptions(edm::ConfigurationDescriptions& descript
   desc.add<std::vector<std::string>>(
     "hltTauFilterLabels",
     {
-      "hltHpsDoublePFTau40TrackPt1MediumChargedIsolation"
+      "hltHpsDoublePFTau35MediumDitauWPDeepTau",
+      "hltHpsDoublePFTau40TrackPt1MediumChargedIsolation",
     });
 
 
