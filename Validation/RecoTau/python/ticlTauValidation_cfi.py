@@ -3,7 +3,8 @@ from Validation.RecoTau.ticlTauValidator_cfi import ticlTauValidator as _ticlTau
 
 # RECO: default
 recoTiclTauValidator = _ticlTauValidator.clone(
-    folder = cms.string("RecoTauV/ticlTauValidator")
+    folder = cms.string("Tau/ticlTauValidator"),
+    hltProcessName = cms.string("HLT")
 )
 
 # HLT
@@ -14,26 +15,36 @@ hltTiclTauValidator = _ticlTauValidator.clone(
     pf          = cms.InputTag("hltParticleFlowTmp"),
     pfTmpBarrel = cms.InputTag("hltParticleFlowTmpBarrel"),
     jets        = cms.InputTag("hltAK4PFJets"),
-    ticlCandidates = cms.InputTag("hltTiclTrackstersMerge"),
+    #ticlCandidates = cms.InputTag("hltTiclTrackstersMerge"),
+    ticlCandidates = cms.InputTag("hltTiclCandidate"),
     simTracksters  = cms.InputTag("hltTiclSimTracksters","fromCPs"),
-    simToRecoTracksterAssocByLCs =
-        cms.InputTag("hltAllTrackstersToSimTrackstersAssociationsByLCs",
-                        "hltTiclSimTrackstersfromCPsTohltTiclTrackstersMerge"),
-    recoToSimTracksterAssocByLCs =
-        cms.InputTag("hltAllTrackstersToSimTrackstersAssociationsByLCs",
-                        "hltTiclTrackstersMergeTohltTiclSimTrackstersfromCPs"),
+    simToRecoTracksterAssocByLCs = cms.InputTag(
+        "hltAllTrackstersToSimTrackstersAssociationsByLCs",
+        "hltTiclSimTrackstersfromCPsTohltTiclCandidate"
+    ),
+    #simToRecoTracksterAssocByLCs =
+    #    cms.InputTag("hltAllTrackstersToSimTrackstersAssociationsByLCs",
+    #                 "hltTiclSimTrackstersfromCPsTohltTiclTrackstersMerge"),
+    recoToSimTracksterAssocByLCs = cms.InputTag(
+        "hltAllTrackstersToSimTrackstersAssociationsByLCs",
+        "hltTiclCandidateTohltTiclSimTrackstersfromCPs"
+    ),
+    #recoToSimTracksterAssocByLCs =
+    #    cms.InputTag("hltAllTrackstersToSimTrackstersAssociationsByLCs",
+    #                    "hltTiclTrackstersMergeTohltTiclSimTrackstersfromCPs"),
     genVisTaus = cms.InputTag("genVisTaus"),
     genParticles = cms.InputTag("genParticles"),
-    maxAssocScore = 0.6,
+    hltProcessName = cms.string("HLT"),
+    maxAssocScore = 0.6
 )
 
-from Configuration.ProcessModifiers.ticlv5_TrackLinkingGNN_cff import ticlv5_TrackLinkingGNN
-ticlv5_TrackLinkingGNN.toModify(hltTiclTauValidator,
-                                ticlCandidates = cms.InputTag("hltTiclCandidate"),
-                                simToRecoTracksterAssocByLCs =
-                                cms.InputTag("hltAllTrackstersToSimTrackstersAssociationsByLCs",
-                                             "hltTiclSimTrackstersfromCPsTohltTiclCandidate"),
-                                recoToSimTracksterAssocByLCs =
-                                cms.InputTag("hltAllTrackstersToSimTrackstersAssociationsByLCs",
-                                             "hltTiclCandidateTohltTiclSimTrackstersfromCPs"),
-                                )
+#from Configuration.ProcessModifiers.ticlv5_TrackLinkingGNN_cff import ticlv5_TrackLinkingGNN
+#ticlv5_TrackLinkingGNN.toModify(hltTiclTauValidator,
+#                                ticlCandidates = cms.InputTag("hltTiclCandidate"),
+#                                simToRecoTracksterAssocByLCs =
+#                                cms.InputTag("hltAllTrackstersToSimTrackstersAssociationsByLCs",
+#                                             "hltTiclSimTrackstersfromCPsTohltTiclCandidate"),
+#                                recoToSimTracksterAssocByLCs =
+#                                cms.InputTag("hltAllTrackstersToSimTrackstersAssociationsByLCs",
+#                                             "hltTiclCandidateTohltTiclSimTrackstersfromCPs"),
+#                                )
