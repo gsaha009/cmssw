@@ -4,6 +4,7 @@ from Validation.RecoTau.ticlTauValidator_cfi import ticlTauValidator as _ticlTau
 # RECO: default
 recoTiclTauValidator = _ticlTauValidator.clone(
     folder = cms.string("Tau/ticlTauValidator"),
+    checkhlt = cms.bool(False),
     hltProcessName = cms.string("HLT")
 )
 
@@ -38,13 +39,3 @@ hltTiclTauValidator = _ticlTauValidator.clone(
     maxAssocScore = 0.6
 )
 
-#from Configuration.ProcessModifiers.ticlv5_TrackLinkingGNN_cff import ticlv5_TrackLinkingGNN
-#ticlv5_TrackLinkingGNN.toModify(hltTiclTauValidator,
-#                                ticlCandidates = cms.InputTag("hltTiclCandidate"),
-#                                simToRecoTracksterAssocByLCs =
-#                                cms.InputTag("hltAllTrackstersToSimTrackstersAssociationsByLCs",
-#                                             "hltTiclSimTrackstersfromCPsTohltTiclCandidate"),
-#                                recoToSimTracksterAssocByLCs =
-#                                cms.InputTag("hltAllTrackstersToSimTrackstersAssociationsByLCs",
-#                                             "hltTiclCandidateTohltTiclSimTrackstersfromCPs"),
-#                                )

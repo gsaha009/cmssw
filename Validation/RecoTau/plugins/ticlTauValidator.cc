@@ -130,6 +130,7 @@ private:
   edm::EDGetTokenT<TrackingParticleCollection>   trackingParticleToken_;
   edm::EDGetTokenT<TracksterToTracksterMap>      recoToSimAssocByLCsToken_;
   edm::EDGetTokenT<reco::RecoToSimCollection>    trackRecoToSimToken_;
+  bool checkhlt_ = false;
   std::vector<std::string> hltTauFilterLabels_;
   std::string hltProcessName_;
   std::vector<edm::EDGetTokenT<trigger::TriggerFilterObjectWithRefs>> hltFilterTokens_;
@@ -357,13 +358,15 @@ TICLTauValidator::TICLTauValidator(const edm::ParameterSet& iConfig)
     iConfig.getParameter<edm::InputTag>("recoToSimTracksterAssocByLCs") );
   trackRecoToSimToken_ = consumes<reco::RecoToSimCollection>(
     iConfig.getParameter<edm::InputTag>("trackRecoToSim") );
+  checkhlt_ = iConfig.getParameter<bool>("checkhlt");
   hltTauFilterLabels_ = iConfig.getParameter<std::vector<std::string>>("hltTauFilterLabels");
   hltProcessName_ = iConfig.getParameter<std::string>("hltProcessName");
-  for (const auto& label : hltTauFilterLabels_) {
-    hltFilterTokens_.push_back(
-      mayConsume<trigger::TriggerFilterObjectWithRefs>(edm::InputTag(label, "", hltProcessName_))
-    );
-  }
+  if (checkhlt_)
+    {
+      for (const auto& label : hltTauFilterLabels_) {
+	hltFilterTokens_.push_back(mayConsume<trigger::TriggerFilterObjectWithRefs>(edm::InputTag(label, "", hltProcessName_)));
+      }
+    }
 }
 
 void TICLTauValidator::bookHistograms(DQMStore::IBooker& ibook,
@@ -647,11 +650,14 @@ void TICLTauValidator::bookHistograms(DQMStore::IBooker& ibook,
   };
 
   bookFakeRateSet("fake", "", fakeRate_);
-  bookFakeRateSet("fake_chargedIsoPath", "charged iso path taus", fakeRateFilt_);
+  if (checkhlt_)
+    bookFakeRateSet("fake_chargedIsoPath", "charged iso path taus", fakeRateFilt_);
   bookFakeRateSet("fake_calo", "calo assoc", fakeRateCalo_);
-  bookFakeRateSet("fake_calo_chargedIsoPath", "calo assoc, charged iso path taus", fakeRateCaloFilt_);
+  if (checkhlt_)
+    bookFakeRateSet("fake_calo_chargedIsoPath", "calo assoc, charged iso path taus", fakeRateCaloFilt_);
   bookFakeRateSet("fake_track", "track assoc", fakeRateTrack_);
-  bookFakeRateSet("fake_track_chargedIsoPath", "track assoc, charged iso path taus", fakeRateTrackFilt_);
+  if (checkhlt_)
+    bookFakeRateSet("fake_track_chargedIsoPath", "track assoc, charged iso path taus", fakeRateTrackFilt_);
 }
 
 void TICLTauValidator::analyze(const edm::Event& iEvent,
@@ -681,18 +687,20 @@ void TICLTauValidator::analyze(const edm::Event& iEvent,
   std::vector<reco::PFTauRef> finalFilterTauRefs;
 
   // Access HLT filter products and extract PFTau refs
-  for (size_t fi = 0; fi < hltTauFilterLabels_.size(); ++fi) {
-    edm::Handle<trigger::TriggerFilterObjectWithRefs> filterProduct;
-    iEvent.getByToken(hltFilterTokens_[fi], filterProduct);
-    if (filterProduct.isValid()) {
-      trigger::VRpftau tauRefs;
-      filterProduct->getObjects(trigger::TriggerTau, tauRefs);
-      if (hltTauFilterLabels_[fi] == "hltHpsDoublePFTau40TrackPt1MediumChargedIsolation")
-	finalFilterTauRefs = tauRefs;
-      // HLT filter products accessed for final filter tau reference extraction
-    } else {
-      edm::LogWarning("TICLTauValidator") << "HLT filter " << hltTauFilterLabels_[fi]
-                                          << " product not available";
+  if (checkhlt_) {
+    for (size_t fi = 0; fi < hltTauFilterLabels_.size(); ++fi) {
+      edm::Handle<trigger::TriggerFilterObjectWithRefs> filterProduct;
+      iEvent.getByToken(hltFilterTokens_[fi], filterProduct);
+      if (filterProduct.isValid()) {
+	trigger::VRpftau tauRefs;
+	filterProduct->getObjects(trigger::TriggerTau, tauRefs);
+	if (hltTauFilterLabels_[fi] == "hltHpsDoublePFTau40TrackPt1MediumChargedIsolation")
+	  finalFilterTauRefs = tauRefs;
+	// HLT filter products accessed for final filter tau reference extraction
+      } else {
+	edm::LogWarning("TICLTauValidator") << "HLT filter " << hltTauFilterLabels_[fi]
+					    << " product not available";
+      }
     }
   }
 
@@ -1871,7 +1879,8 @@ void TICLTauValidator::fillDescriptions(edm::ConfigurationDescriptions& descript
   desc.add<double>("maxAssocScore", 0.6);
   desc.add<double>("hgcalEtaAbsMin", 1.5);
 
-
+  desc.add<bool>("checkhlt", true); // for reco step, it should be set false in config
+  
   desc.add<std::string>("hltProcessName", "HLTX");
   desc.add<std::vector<std::string>>(
     "hltTauFilterLabels",
