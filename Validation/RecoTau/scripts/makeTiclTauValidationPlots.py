@@ -98,9 +98,8 @@ def overlay_efficiency(list_objs, out):
 
     fontsize = 20
     fig, ax = plt.subplots(figsize=(10, 10))
-    hep.cms.text(' Simulation Preliminary', ax=ax, fontsize=fontsize)
-    hep.cms.lumitext(args.sample_label, ax=ax, fontsize=fontsize)
-
+    hep.cms.label(f'Preliminary  {args.sample_label}', data=False, lumi=None, com=None)
+    
     for i,obj in enumerate(list_objs):
         nbins, bin_edges, bin_centers, bin_widths = define_bins(obj)
         values, errors = histo_values_errors(obj)
@@ -159,8 +158,7 @@ def overlay_efficiency_with_gen(list_eff_objs, gen_obj, out, step_labels=None):
         step_labels = step_label_dict
     fontsize = 20
     fig, ax1 = plt.subplots(figsize=(12, 10))
-    hep.cms.text(' Simulation Preliminary', ax=ax1, fontsize=fontsize)
-    hep.cms.lumitext(args.sample_label, ax=ax1, fontsize=fontsize)
+    hep.cms.label(f'Preliminary  {args.sample_label}', data=False, lumi=None, com=None)
     dm = int(list_eff_objs[0].GetTitle().split('DM ')[1].split(' ')[0])
     leg = int(list_eff_objs[0].GetTitle().split('leg')[1].split(' ')[0])
     var = list_eff_objs[0].GetTitle().split('vs ')[1]
@@ -249,9 +247,8 @@ def overlay_calo_and_track_chain(calo_objs, track_objs, gen_obj, out):
     """
     fontsize = 20
     fig, ax1 = plt.subplots(figsize=(14, 10))
-    hep.cms.text(' Simulation Preliminary', ax=ax1, fontsize=fontsize)
-    hep.cms.lumitext(args.sample_label, ax=ax1, fontsize=fontsize)
-
+    hep.cms.label(f'Preliminary  {args.sample_label}', data=False, lumi=None, com=None)
+    
     ref_obj = calo_objs[0] if calo_objs else track_objs[0]
     dm = int(ref_obj.GetTitle().split('DM ')[1].split(' ')[0])
     leg = int(ref_obj.GetTitle().split('leg')[1].split(' ')[0])
@@ -337,9 +334,8 @@ def overlay_hist(list_objs, labels, out, xlabel, ylabel, title=""):
 
     fontsize = 20
     fig, ax = plt.subplots(figsize=(10, 10))
-    hep.cms.text(' Simulation Preliminary', ax=ax, fontsize=fontsize)
-    hep.cms.lumitext(args.sample_label, ax=ax, fontsize=fontsize)
-
+    hep.cms.label(f'Preliminary  {args.sample_label}', data=False, lumi=None, com=None)
+    
     for i, (obj, label) in enumerate(zip(list_objs, labels)):
         nbins, bin_edges, bin_centers, bin_widths = define_bins(obj)
         values, errors = histo_values_errors(obj)
@@ -979,7 +975,7 @@ def main():
     if args.step == 'HLT':
         dqm_dir = "DQMData/Run 1/HLT/Run summary/Tau/ticlTauValidator"
     elif args.step == 'Offline':
-        dqm_dir = "DQMData/Run 1/Run summary/RecoTauV/ticlTauValidator/"
+        dqm_dir = "DQMData/Run 1/Run summary/Tau/ticlTauValidator/"
     else:
         sys.exit("### ERROR: Please chose the step among the following ['HLT', 'Offline']")
 
